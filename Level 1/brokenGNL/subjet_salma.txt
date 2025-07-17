@@ -1,0 +1,27 @@
+char *get_next_line(int fd);
+
+
+Retourne une ligne qui a été lue depuis le descripteur de fichier.
+
+
+Une ligne est définie comme une suite de caractères de 0 à n terminant
+
+par \u (code ASCII 0x0a), ou par la fin du ficher (EOF).
+
+La ligne retournée doit contenir le '\n' s’il est présent.
+
+Lorsque vous atteignez la fin du ficher (EOF) vous devez stocker le tampon courant dans un char* et le retournez , si il est vide retournez NULL.  
+
+En cas d’erreur retournez NULL.
+
+Si vous ne retournez pas NULL, le pointeur retourné doit pouvoir être libéré (free).
+
+Compile avec -D BUFFER_SIZE=xx (dans fonctions Read aussi).
+
+Pas de fuite de mémoire.
+
+Assurez que la fonction se comporte correctement lors de la lecture
+
+de fichiers, de la sortie standard, d’une redirection etc. 
+
+GNL à un comportement indefini lorsqu’elle lit un fichier binaire.
