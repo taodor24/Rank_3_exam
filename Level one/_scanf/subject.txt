@@ -27,6 +27,9 @@ Hint : You may need to read the man of scanf.
 
 
 
+
+/////////////////////////////////////////////////////////////////////////////
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <ctype.h>
