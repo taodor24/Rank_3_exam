@@ -1,193 +1,182 @@
-#include <unistd.h> // read
-#include <stdlib.h> // malloc, free
+#include <unistd.h>
+#include <stdlib.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
-#endif
+// #ifndef BUFFER_SIZE
+// # define BUFFER_SIZE 1024
+// #endif
 
-// --- Вспомогательные функции ---
-
-static size_t ft_strlen_gnl(const char *s)
+size_t	ft_strlen(const char *s)
 {
-    size_t i = 0;
-    if (!s)
-        return (0);
-    while (s[i])
-        i++;
-    return (i);
+	size_t	i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
-static char *ft_strchr_gnl(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
-    if (!s)
-        return (NULL);
-    while (*s)
-    {
-        if (*s == (char)c)
-            return ((char *)s);
-        s++;
-    }
-    if ((char)c == '\0')
-        return ((char *)s);
-    return (NULL);
+	char	ch;
+
+	if (!s)
+		return (NULL);
+	ch = (char)c;
+	while (*s != '\0')
+	{
+		if (*s == ch)
+			return ((char *)s);
+		s++;
+	}
+	if (ch == '\0')
+		return ((char *)s);
+	return (NULL);
 }
 
-static char *ft_strjoin_gnl(char *s1, char *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-    char    *new_str;
-    size_t  len1;
-    size_t  len2;
-    size_t  i;
-    size_t  j;
+	char	*new_str;
+	size_t	len1;
+	size_t	len2;
+	size_t	i;
+	size_t	j;
 
-    len1 = ft_strlen_gnl(s1);
-    len2 = ft_strlen_gnl(s2);
-    new_str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
-    if (!new_str)
-    {
-        free(s1);
-        return (NULL);
-    }
-    i = 0;
-    while (i < len1)
-    {
-        new_str[i] = s1[i];
-        i++;
-    }
-    j = 0;
-    while (j < len2)
-    {
-        new_str[i + j] = s2[j];
-        j++;
-    }
-    new_str[i + j] = '\0';
-    free(s1); // Освобождаем старую строку s1
-    return (new_str);
+	if (!s1 && !s2)
+		return (NULL);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	new_str = (char *)malloc(sizeof(char) * (len1 + len2 + 1));
+	if (!new_str)
+		return (NULL);
+	i = 0;
+	while (i < len1)
+	{
+		new_str[i] = s1[i];
+		i++;
+	}
+	j = 0;
+	while (j < len2)
+	{
+		new_str[i + j] = s2[j];
+		j++;
+	}
+	new_str[i + j] = '\0';
+	return (new_str);
 }
 
-// --- Основная функция GNL ---
-
-static char *read_and_stash(int fd, char *stash)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-    char    *buffer;
-    int     bytes_read;
+	char	*sub;
+	size_t	i;
+	size_t	s_len;
 
-    buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-    if (!buffer)
-    {
-        free(stash);
-        return (NULL);
-    }
-    bytes_read = 1;
-    while (!ft_strchr_gnl(stash, '\n') && bytes_read != 0)
-    {
-        bytes_read = read(fd, buffer, BUFFER_SIZE);
-        if (bytes_read == -1)
-        {
-            free(buffer);
-            free(stash);
-            return (NULL);
-        }
-        buffer[bytes_read] = '\0';
-        stash = ft_strjoin_gnl(stash, buffer);
-        if (!stash) // Проверка на случай ошибки malloc в ft_strjoin_gnl
-        {
-            free(buffer);
-            return (NULL);
-        }
-    }
-    free(buffer);
-    return (stash);
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (NULL);
+	if (len > s_len - start)
+		len = s_len - start;
+	sub = (char *)malloc(sizeof(char) * (len + 1));
+	if (!sub)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		sub[i] = s[start + i];
+		i++;
+	}
+	sub[i] = '\0';
+	return (sub);
 }
 
-static char *extract_line(char *stash)
+static int	read_and_stash(int fd, char **stash)
 {
-    char    *line;
-    int     i;
+	char	*buffer;
+	int		bytes_read;
+	char	*temp_stash;
 
-    i = 0;
-    if (!stash || stash[0] == '\0') // Если stash пуст или NULL, нет строки
-        return (NULL);
-    while (stash[i] && stash[i] != '\n')
-        i++;
-    if (stash[i] == '\n')
-        i++; // Включаем '\n' в строку
-    line = (char *)malloc(sizeof(char) * (i + 1));
-    if (!line)
-        return (NULL);
-    i = 0;
-    while (stash[i] && stash[i] != '\n')
-    {
-        line[i] = stash[i];
-        i++;
-    }
-    if (stash[i] == '\n')
-    {
-        line[i] = stash[i];
-        i++;
-    }
-    line[i] = '\0';
-    return (line);
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (-1);
+	bytes_read = 1;
+	while (!ft_strchr(*stash, '\n') && bytes_read > 0)
+	{
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buffer);
+			return (-1);
+		}
+		buffer[bytes_read] = '\0';
+		if (bytes_read > 0)
+		{
+			temp_stash = *stash;
+			*stash = ft_strjoin(temp_stash, buffer);
+			free(temp_stash);
+			if (!*stash)
+			{
+				free(buffer);
+				return (-1);
+			}
+		}
+	}
+	free(buffer);
+	return (0);
 }
 
-static char *clean_stash(char *stash)
+static char	*extract_line(char **stash)
 {
-    char    *new_stash;
-    int     i;
-    int     j;
+	char	*line;
+	char	*newline_pos;
+	size_t	line_len;
+	char	*temp_stash;
 
-    i = 0;
-    while (stash[i] && stash[i] != '\n')
-        i++;
-    if (stash[i] == '\n')
-        i++; // Пропускаем '\n' и то, что до него
-    if (!stash[i]) // Если после \n ничего не осталось или его не было
-    {
-        free(stash);
-        return (NULL);
-    }
-    new_stash = (char *)malloc(sizeof(char) * (ft_strlen_gnl(stash) - i + 1));
-    if (!new_stash) // Обработка ошибки malloc
-    {
-        free(stash);
-        return (NULL);
-    }
-    j = 0;
-    while (stash[i])
-        new_stash[j++] = stash[i++];
-    new_stash[j] = '\0';
-    free(stash); // Освобождаем старый stash
-    return (new_stash);
+	if (!*stash || ft_strlen(*stash) == 0)
+		return (NULL);
+	newline_pos = ft_strchr(*stash, '\n');
+	if (newline_pos)
+	{
+		line_len = newline_pos - *stash + 1;
+		line = ft_substr(*stash, 0, line_len);
+		if (!line) return (NULL);
+		temp_stash = *stash;
+		*stash = ft_substr(temp_stash, line_len, ft_strlen(temp_stash) - line_len);
+		free(temp_stash);
+		if (!*stash && (ft_strlen(temp_stash) - line_len > 0))
+		{
+			free(line);
+			return (NULL);
+		}
+	}
+	else
+	{
+		line = ft_substr(*stash, 0, ft_strlen(*stash));
+		if (!line) return (NULL);
+		free(*stash);
+		*stash = NULL;
+	}
+	return (line);
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
-    static char *stash = NULL; // Статический буфер для сохранения данных
-    char        *line;
+	static char	*stash[1024];
+	char		*line;
 
-    if (fd < 0 || BUFFER_SIZE <= 0)
-    {
-        if (stash)
-        {
-            free(stash);
-            stash = NULL;
-        }
-        return (NULL);
-    }
-
-    stash = read_and_stash(fd, stash);
-    if (!stash)
-        return (NULL);
-
-    line = extract_line(stash);
-    if (!line && stash && stash[0] == '\0') // Если line пустая, но stash есть и пустой (т.е. был только '\0')
-    {
-        free(stash);
-        stash = NULL;
-        return (NULL);
-    }
-
-    stash = clean_stash(stash); // stash теперь содержит остаток или NULL
-
-    return (line);
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
+		return (NULL);
+	if (read_and_stash(fd, &stash[fd]) == -1)
+	{
+		if (stash[fd])
+		{
+			free(stash[fd]);
+			stash[fd] = NULL;
+		}
+		return (NULL);
+	}
+	line = extract_line(&stash[fd]);
+	return (line);
 }
