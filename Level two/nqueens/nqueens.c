@@ -1,0 +1,98 @@
+#include <unistd.h>
+#include <stdlib.h>
+
+int n;
+
+void p(int *a)
+{
+    for(int i=0;i<n;i++)
+    {
+        char c=a[i]+'0';
+        write(1,&c,1);
+        if(i!=n-1) write(1," ",1);
+    }
+    write(1,"\n",1);
+}
+
+int s(int *a,int c,int r)
+{
+    for(int i=0;i<c;i++)
+        if(a[i]==r || abs(a[i]-r)==abs(i-c)) return 0;
+    return 1;
+}
+
+void q(int *a,int c)
+{
+    if(c==n) { p(a); return; }
+    for(int r=0;r<n;r++)
+        if(s(a,c,r)) { a[c]=r; q(a,c+1); }
+}
+
+int main(int argc,char **argv)
+{
+    if(argc!=2) return 1;
+    n=atoi(argv[1]);
+    int a[n];
+    q(a,0);
+    return 0;
+}
+
+
+
+
+
+
+/*
+ANOTHER VERSION:
+
+#include <unistd.h>
+#include <stdlib.h>
+
+int n;
+
+int is_safe(int *pos, int col, int row)
+{
+    for (int i = 0; i < col; i++)
+        if (pos[i] == row || abs(pos[i] - row) == abs(i - col))
+            return 0;
+    return 1;
+}
+
+void print_solution(int *pos)
+{
+    char c;
+    for (int i = 0; i < n; i++)
+    {
+        c = pos[i] + '0';
+        write(1, &c, 1);
+        if (i != n - 1)
+            write(1, " ", 1);
+    }
+    write(1, "\n", 1);
+}
+
+void solve(int *pos, int col)
+{
+    if (col == n)
+    {
+        print_solution(pos);
+        return;
+    }
+    for (int row = 0; row < n; row++)
+        if (is_safe(pos, col, row))
+        {
+            pos[col] = row;
+            solve(pos, col + 1);
+        }
+}
+
+int main(int argc, char **argv)
+{
+    if (argc != 2)
+        return 1;
+    n = atoi(argv[1]);
+    int pos[n];
+    solve(pos, 0);
+    return 0;
+}
+*/
