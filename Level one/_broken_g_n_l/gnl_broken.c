@@ -85,3 +85,77 @@ char *get_next_line(int fd)
 
     return ret;
 }
+
+
+
+
+
+/// MAIN to test errors: 
+#include <stdio.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int ac, char **av)
+{
+    // --- Test 1: no file provided ---
+    if (ac < 2)
+    {
+        printf("❌ Error: no file argument provided\n");
+        return 1;
+    }
+
+    // --- Test 2: opening a non-existing file ---
+    int fd = open("no_such_file.txt", O_RDONLY);
+    if (fd < 0)
+        printf("✅ Test: non-existing file handled correctly\n");
+
+    // --- Test 3: empty file ---
+    fd = open("empty.txt", O_RDONLY);
+    if (fd >= 0)
+    {
+        char *line = get_next_line(fd);
+        if (!line)
+            printf("✅ Test: empty file -> returned NULL as expected\n");
+        else
+        {
+            printf("❌ Error: empty file returned a line: %s\n", line);
+            free(line);
+        }
+        close(fd);
+    }
+
+    // --- Test 4: file without a newline ---
+    fd = open("no_newline.txt", O_RDONLY);
+    if (fd >= 0)
+    {
+        char *line;
+        while ((line = get_next_line(fd)))
+        {
+            printf("Line (no \\n): \"%s\"\n", line);
+            free(line);
+        }
+        close(fd);
+    }
+
+    // --- Test 5: regular file with multiple lines ---
+    fd = open(av[1], O_RDONLY);
+    if (fd >= 0)
+    {
+        char *line;
+        int i = 1;
+        while ((line = get_next_line(fd)))
+        {
+            printf("Line %d: %s", i++, line);
+            free(line);
+        }
+        close(fd);
+    }
+
+    // --- Test 6: functions called with NULL arguments ---
+    printf("ft_strlen(NULL) = %zu (expected 0)\n", ft_strlen(NULL));
+    printf("ft_strchr(NULL, 'a') = %p (expected NULL)\n", ft_strchr(NULL, 'a'));
+    printf("ft_memcpy(NULL, NULL, 5) = %p (expected NULL)\n", ft_memcpy(NULL, NULL, 5));
+
+    return 0;
+}
