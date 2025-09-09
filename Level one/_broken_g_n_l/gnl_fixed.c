@@ -1,4 +1,3 @@
-// get_next_line broken version (rescrisă cu greșelile de scriere corectate, dar fără corectarea logicii)
 
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 32
@@ -104,6 +103,7 @@ char *get_next_line(int fd)
 
     return ret;
 }
+
 #include <stdio.h>
 #include <fcntl.h>
 
@@ -122,6 +122,3 @@ int main(int ac, char **av)
 	}
 	close(fd);
 }
-
-
-		

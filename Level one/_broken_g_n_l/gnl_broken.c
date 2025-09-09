@@ -1,4 +1,3 @@
-// get_next_line broken version (rescrisă cu greșelile de scriere corectate, dar fără corectarea logicii)
 
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 32
@@ -17,6 +16,7 @@ char *ft_strchr(char *s, char c)
     return NULL;
 }
 
+
 size_t ft_strlen(char *s)
 {
     size_t ret = 0;
@@ -25,12 +25,17 @@ size_t ft_strlen(char *s)
     return ret;
 }
 
+
 void *ft_memcpy(void *dest, const void *src, size_t n)
 {
     while (n-- > 0)
         ((char *)dest)[n] = ((char *)src)[n];
     return dest;
 }
+
+
+
+
 
 int str_append_mem(char **s1, char *s2, size_t size2)
 {

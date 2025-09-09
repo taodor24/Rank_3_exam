@@ -4,12 +4,10 @@
 
 int ft_scanf(const char *format, ...)
 {
-    va_list args;
-    va_start(args, format);
+    va_list ap;
+    int count = 0, c;
 
-    int count = 0;
-    int c;
-
+    va_start(ap, format);
     while (*format)
     {
         if (*format == '%')
@@ -17,59 +15,47 @@ int ft_scanf(const char *format, ...)
             format++;
             if (*format == 'd')
             {
-                int *p = va_arg(args, int*);
-                int num = 0, sign = 1;
-                
+                int *n = va_arg(ap, int*);
+                int sign = 1, val = 0;
+
                 while (isspace(c = fgetc(stdin)));
-                if (c == '-') { sign = -1; c = fgetc(stdin); }
+                if (c == '-' || c == '+') { if (c == '-') sign = -1; c = fgetc(stdin); }
                 if (!isdigit(c)) return count;
-                
-                do { num = num * 10 + (c - '0'); } while (isdigit(c = fgetc(stdin)));
+                do { val = val * 10 + (c - '0'); } while (isdigit(c = fgetc(stdin)));
                 if (c != EOF) ungetc(c, stdin);
-                
-                *p = num * sign;
+                *n = val * sign;
                 count++;
             }
             else if (*format == 's')
             {
-                char *p = va_arg(args, char*);
+                char *s = va_arg(ap, char*);
                 while (isspace(c = fgetc(stdin)));
                 if (c == EOF) return count;
-                
-                do { *p++ = c; } while ((c = fgetc(stdin)) != EOF && !isspace(c));
+                do { *s++ = c; } while ((c = fgetc(stdin)) != EOF && !isspace(c));
                 if (c != EOF) ungetc(c, stdin);
-                *p = '\0';
+                *s = '\0';
                 count++;
             }
             else if (*format == 'c')
             {
-                char *p = va_arg(args, char*);
-                c = fgetc(stdin);
-                if (c == EOF) return count;
-                *p = c;
+                char *ch = va_arg(ap, char*);
+                if ((c = fgetc(stdin)) == EOF) return count;
+                *ch = c;
                 count++;
             }
-            else return count; // unsupported format
-        }
-        else
-        {
-            // pass spaces and number match CHECK
-            c = fgetc(stdin);
-            if (c != *format) return count;
         }
         format++;
     }
-
-    va_end(args);
+    va_end(ap);
     return count;
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
-//     MAIN:
-#include <stdio.h>
 
-int ft_scanf(const char *format, ...);
+
+//     MAIN:
+
+#include <stdio.h>
 
 int main() {
     int num;
