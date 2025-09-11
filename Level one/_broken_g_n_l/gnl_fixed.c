@@ -1,4 +1,3 @@
-
 #ifndef BUFFER_SIZE            // in notes you can see what i've changed compared to broken version
 #define BUFFER_SIZE 32
 #endif

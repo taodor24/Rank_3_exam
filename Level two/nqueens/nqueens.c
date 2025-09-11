@@ -3,27 +3,37 @@
 
 int n;
 
-void p(int *a)
+
+void putnbr(int n)
 {
-    for(int i=0;i<n;i++)
-    {
-        char c=a[i]+'0';
-        write(1,&c,1);
-        if(i!=n-1) write(1," ",1);
-    }
-    write(1,"\n",1);
+    char c;
+    if (n >= 10)
+        putnbr(n / 10);
+    c = n % 10 + '0';
+    write(1, &c, 1);
 }
 
+void print(int *a)
+{
+    for (int i = 0; i < n; i++)
+    {
+        if (i > 0)
+            write(1, " ", 1);
+        putnbr(a[i]);
+    }
+    write(1, "\n", 1);
+}
+////////////////////////////////////////////////////////
 int s(int *a,int c,int r)
 {
-    for(int i=0;i<c;i++)
+    for(int i=0; i<c; i++)
         if(a[i]==r || abs(a[i]-r)==abs(i-c)) return 0;
     return 1;
 }
 
 void q(int *a,int c)
 {
-    if(c==n) { p(a); return; }
+    if(c==n) { print(a); return; }
     for(int r=0;r<n;r++)
         if(s(a,c,r)) { a[c]=r; q(a,c+1); }
 }
