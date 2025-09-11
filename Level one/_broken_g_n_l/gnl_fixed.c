@@ -1,5 +1,5 @@
 
-#ifndef BUFFER_SIZE
+#ifndef BUFFER_SIZE            // in notes you can see what i've changed compared to broken version
 #define BUFFER_SIZE 32
 #endif
 
@@ -8,7 +8,7 @@
 
 char *ft_strchr(char *s, char c)
 {
-	if(!s) return NULL;	
+	if(!s) return NULL; //    NULL check!
     int i = 0;
     while (s[i] && s[i] != c)
         i++;
@@ -19,7 +19,7 @@ char *ft_strchr(char *s, char c)
 
 size_t ft_strlen(char *s)
 {
-	if (!s) return 0;
+	if (!s) return 0;     //                       NULL check!
     size_t ret = 0;
     while (s[ret])
         ret++;
@@ -28,8 +28,8 @@ size_t ft_strlen(char *s)
 
 void *ft_memcpy(void *dest, const void *src, size_t n)
 {
-	if(!dest || !src) return dest;
-	int i = 0;
+	if(!dest || !src) return dest; //               NULL check!
+	int i = 0;                     // rewrite function
     while (i < n)
     {
 	    ((char *)dest)[i] = ((char *)src)[i];
@@ -40,8 +40,8 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
 
 int str_append_mem(char **s1, char *s2, size_t size2)
 {
-	if(!s1) return 0;
-    size_t size1 = *s1 ? ft_strlen(*s1) : 0;
+	if(!s1) return 0;                         //    NULL check!
+    size_t size1 = *s1 ? ft_strlen(*s1) : 0;  // Modified function
     char *tmp = malloc(size1 + size2 + 1);
     if (!tmp)
         return 0;
@@ -71,7 +71,7 @@ char *get_next_line(int fd)
             return NULL;
 
         int read_ret = read(fd, b, BUFFER_SIZE);
-        if(read_ret == 0)
+        if(read_ret == 0)                           // EOF processing is added
 	{
 		b[0] ='\0';
 		if( !ret || !(*ret))
@@ -95,7 +95,7 @@ char *get_next_line(int fd)
         free(ret);
         return NULL;
     }
-    size_t i = 0;
+    size_t i = 0;                                    // buffer clean after return of a string
     size_t j = tmp - b +1;
     while(b[j])
 	   b[i++] = b[j++];
