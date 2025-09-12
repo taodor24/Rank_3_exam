@@ -5,13 +5,12 @@
 int ft_scanf(const char *format, ...)
 {
     va_list ap;
-    int count = 0; 
-    int c;
+    int count = 0, c;
 
     va_start(ap, format);
     while (*format)
     {
-        if ( *format == '%' )
+        if (*format == '%')
         {
             format++;
             if (*format == 'd')
@@ -44,14 +43,14 @@ int ft_scanf(const char *format, ...)
                 *ch = c;
                 count++;
             }
-            
         }
         format++;
     }
-
     va_end(ap);
     return count;
 }
+
+
 
 
 //     MAIN:
@@ -66,7 +65,7 @@ int main() {
     printf("Enter a NUMBER, SYMBOL and a WORD: ");
     int res = ft_scanf("%d %c %s", &num, &c, str);
 
-    printf("\nft_scanf returned: %d\n", res);
+    printf("\nft_scanf returned COUNT: %d\n", res);
     printf("Read NUMBER: %d\n", num);
     printf("Read SYMBOL: %c\n", c);
     printf("Read WORD: %s\n", str);
