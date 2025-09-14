@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "queue": "c",
+        "stack": "c",
+        "unistd.h": "c"
+    }
+}

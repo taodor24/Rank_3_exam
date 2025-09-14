@@ -8,7 +8,7 @@
 
 char *ft_strchr(char *s, char c)
 {
-    int i = 0;
+    int i = 0;                     //    needs a NULL check!
     while (s[i] && s[i] != c)
         i++;
     if (s[i] == c)
@@ -19,7 +19,7 @@ char *ft_strchr(char *s, char c)
 
 size_t ft_strlen(char *s)
 {
-    size_t ret = 0;
+    size_t ret = 0;                 //      needs a NULL check!
     while (s[ret])
         ret++;
     return ret;
@@ -27,8 +27,8 @@ size_t ft_strlen(char *s)
 
 
 void *ft_memcpy(void *dest, const void *src, size_t n)
-{
-    while (n-- > 0)
+{                                                           //       needs a   NULL check!
+    while (n-- > 0)                                        // rewrite a whole function
         ((char *)dest)[n] = ((char *)src)[n];
     return dest;
 }
@@ -39,8 +39,8 @@ void *ft_memcpy(void *dest, const void *src, size_t n)
 
 int str_append_mem(char **s1, char *s2, size_t size2)
 {
-    size_t size1 = ft_strlen(*s1);
-    char *tmp = malloc(size1 + size2 + 1);
+    size_t size1 = ft_strlen(*s1);                       //    add a NULL check!
+    char *tmp = malloc(size1 + size2 + 1);                // Modified function 
     if (!tmp)
         return 0;
     ft_memcpy(tmp, *s1, size1);
@@ -68,7 +68,7 @@ char *get_next_line(int fd)
             return NULL;
 
         int read_ret = read(fd, b, BUFFER_SIZE);
-        if (read_ret == -1)
+        if (read_ret == -1)                                    // add a EOF processing
         {
             free(ret);
             return NULL;
@@ -82,7 +82,7 @@ char *get_next_line(int fd)
         free(ret);
         return NULL;
     }
-
+                                                        // add a buffer clean after return of a string
     return ret;
 }
 
