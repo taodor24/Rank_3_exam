@@ -12,7 +12,7 @@ int main(int ac, char **av)
     char *needle = av[1];
     size_t nlen = strlen(needle), total = 0;
     char *data = NULL, buf[BUFFER_SIZE];
-    ssize_t r;
+    ssize_t r = 0;
 
     while ((r = read(0, buf, BUFFER_SIZE)) > 0) 
     {

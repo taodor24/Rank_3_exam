@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-void putstr(char *s)
+void putstr(char *s)             
 {
     int i = 0;
     while (s[i])
