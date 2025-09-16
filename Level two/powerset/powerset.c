@@ -34,22 +34,48 @@ int main(int argc, char **argv)
         return (0);
 
     int target = atoi(argv[1]);
-    int n = argc - 2;
+    int n = argc - 2;                             // without  ./a.out  and  target
     int *arr = malloc(n * sizeof(int));
     int *subset = malloc(n * sizeof(int));
 
     if (!arr || !subset)
         return (1);
 
-    for (int i = 0; i < n; i++)
-        arr[i] = atoi(argv[i + 2]);
+    for (int i = 0; i < n; i++)                 // arguments  ----> numbers
+        arr[i] = atoi(argv[i + 2]);             // 2 arg shift --->
 
-    backtrack(arr, n, target, 0, subset, 0, 0);
+    backtrack(arr, n, target, 0, subset, 0, 0); // backtrack
 
     free(arr);
     free(subset);
     return (0);
 }
+
+
+/*
+arr — массив всех чисел.
+
+n — сколько всего чисел.
+
+target — целевая сумма.
+
+idx — текущий индекс (где мы находимся).
+
+subset — временный массив для построения подмножества.
+
+sub_size — сколько элементов сейчас в подмножестве.
+
+sum — сумма текущего подмножества.
+*/
+
+
+
+
+
+
+
+
+
 
 
 /*
