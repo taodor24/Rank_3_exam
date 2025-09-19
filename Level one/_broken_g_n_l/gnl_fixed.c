@@ -70,7 +70,7 @@ char *get_next_line(int fd)
             return NULL;
 
         int read_ret = read(fd, b, BUFFER_SIZE);
-        if(read_ret == 0)                           // EOF processing is added
+        if(read_ret == 0)    // EOF processing is added
 	{
 		b[0] ='\0';
 		if( !ret || !(*ret))
@@ -94,12 +94,12 @@ char *get_next_line(int fd)
         free(ret);
         return NULL;
     }
-    size_t i = 0;                                    // buffer clean after return of a string
+    size_t i = 0;         // buffer clean after return of a string
     size_t j = tmp - b +1;
     while(b[j])
 	   b[i++] = b[j++];
     b[i] ='\0';
-
+    
     return ret;
 }
 

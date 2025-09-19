@@ -5,14 +5,14 @@ void    print_subset(int *subset, int size)
 {
     for (int i = 0; i < size; i++)
     {
-        if (i > 0) printf(" ");
+        if (i > 0)
+            printf(" ");
         printf("%d", subset[i]);
     }
     printf("\n");
 }
 
-void    backtrack(int *arr, int n, int target, int idx,
-                  int *subset, int sub_size, int sum)
+void    backtrack(int *arr, int n, int target, int idx, int *subset, int sub_size, int sum)
 {
     if (idx == n) // дошли до конца массива
     {
@@ -34,48 +34,22 @@ int main(int argc, char **argv)
         return (0);
 
     int target = atoi(argv[1]);
-    int n = argc - 2;                             // without  ./a.out  and  target
+    int n = argc - 2;
     int *arr = malloc(n * sizeof(int));
     int *subset = malloc(n * sizeof(int));
 
     if (!arr || !subset)
         return (1);
 
-    for (int i = 0; i < n; i++)                 // arguments  ----> numbers
-        arr[i] = atoi(argv[i + 2]);             // 2 arg shift --->
+    for (int i = 0; i < n; i++)
+        arr[i] = atoi(argv[i + 2]);
 
-    backtrack(arr, n, target, 0, subset, 0, 0); // backtrack
+    backtrack(arr, n, target, 0, subset, 0, 0);
 
     free(arr);
     free(subset);
     return (0);
 }
-
-
-/*
-arr — массив всех чисел.
-
-n — сколько всего чисел.
-
-target — целевая сумма.
-
-idx — текущий индекс (где мы находимся).
-
-subset — временный массив для построения подмножества.
-
-sub_size — сколько элементов сейчас в подмножестве.
-
-sum — сумма текущего подмножества.
-*/
-
-
-
-
-
-
-
-
-
 
 
 /*

@@ -20,7 +20,7 @@ int ft_scanf(const char *format, ...)
 
                 while (isspace(c = fgetc(stdin)));
                 if (c == '-' || c == '+') { if (c == '-') sign = -1; c = fgetc(stdin); }
-                if (!isdigit(c)) return count; 
+                if (!isdigit(c)) return count;
                 do { val = val * 10 + (c - '0'); } while (isdigit(c = fgetc(stdin)));
                 if (c != EOF) ungetc(c, stdin);
                 *n = val * sign;

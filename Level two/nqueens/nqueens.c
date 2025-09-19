@@ -3,8 +3,7 @@
 
 int n;
 
-
-void putnbr(int n)
+void putnbr(int n)                    
 {
     char c;
     if (n >= 10)
@@ -24,28 +23,39 @@ void print(int *a)
     write(1, "\n", 1);
 }
 ////////////////////////////////////////////////////////
-int s(int *a,int c,int r)
+int is_safe(int *board, int col, int row)
 {
-    for(int i=0; i<c; i++)
-        if(a[i]==r || abs(a[i]-r)==abs(i-c)) return 0;
+    for (int i = 0; i < col; i++)
+        if (board[i] == row || abs(board[i] - row) == abs(i - col))
+            return 0;
     return 1;
 }
 
-void q(int *a,int c)
+void solve(int *board, int col)
 {
-    if(c==n) { print(a); return; }
-    for(int r=0;r<n;r++)
-        if(s(a,c,r)) { a[c]=r; q(a,c+1); }
+    if (col == n)
+    {
+        print(board);
+        return;
+    }
+    for (int row = 0; row < n; row++)
+        if (is_safe(board, col, row))
+        {
+            board[col] = row;
+            solve(board, col + 1);
+        }
 }
 
-int main(int argc,char **argv)
+int main(int argc, char **argv)
 {
-    if(argc!=2) return 1;
-    n=atoi(argv[1]);
-    int a[n];
-    q(a,0);
+    if (argc != 2)
+        return 1;
+    n = atoi(argv[1]);
+    int board[n];
+    solve(board, 0);
     return 0;
 }
+
 
 
 
