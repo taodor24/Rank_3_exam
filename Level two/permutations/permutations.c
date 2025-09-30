@@ -1,16 +1,4 @@
-/*
-#ifndef PERMUTATIONS_H
-# define PERMUTATIONS_H
 
-void putstr(char *s);
-void swap(char *s, int i, int j);
-int  next_perm(char *s, int n);
-void sort(char *s, int n);
-
-#endif
-*/
-
-// #include "permutations.h"
 #include <unistd.h>
 #include <stdlib.h>
 
