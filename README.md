@@ -14,7 +14,7 @@ Les solutions proposées sont hypothétiques, elles ne sont peut-être pas parfa
 
 
                    Preparation difficulty rating(on 0-10 scale):
-gnl_fixed.c → 10/10
+gnl_fixed.c → 10/10    (if you write it from scratch, but if you know what to modity, is is 2/10)
 ft_scanf.c → 9/10
 tsp.c → 8/10
 rip.c → 7/10
