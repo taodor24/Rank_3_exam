@@ -5,6 +5,13 @@ S’il y a “OK” dans l’intitulé de l’exercice, par exemple « subject_O
 Les solutions proposées sont hypothétiques, elles ne sont peut-être pas parfaites.
 
 
+! My programs that I have successfully used during the EXAM and that WORKED perfectly:
+-filter.c
+-permutations.c
+
+
+
+
 
                    Preparation difficulty rating(on 0-10 scale):
 gnl_fixed.c → 10/10
