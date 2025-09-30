@@ -6,8 +6,8 @@ Les solutions proposées sont hypothétiques, elles ne sont peut-être pas parfa
 
 
 ! My programs that I have successfully used during the EXAM and that WORKED perfectly:
--filter.c
--permutations.c
+FILTER
+PERMUTATIONS
 
 
 
