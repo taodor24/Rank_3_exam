@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void    print_subset(int *subset, int size)
+void    print_subset(int *subset, int size)                // With SIZE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 {
     for (int i = 0; i < size; i++)
     {

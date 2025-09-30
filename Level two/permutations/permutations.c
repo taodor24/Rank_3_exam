@@ -1,3 +1,16 @@
+/*
+#ifndef PERMUTATIONS_H
+# define PERMUTATIONS_H
+
+void putstr(char *s);
+void swap(char *s, int i, int j);
+int  next_perm(char *s, int n);
+void sort(char *s, int n);
+
+#endif
+*/
+
+// #include "permutations.h"
 #include <unistd.h>
 #include <stdlib.h>
 
@@ -19,20 +32,20 @@ void swap(char *s, int i, int j)
 
 int next_perm(char *s, int n)
 {
-    int i = n - 2;                           
-    while (i >= 0 && s[i] >= s[i + 1])       
-        i--;                                 
-    if (i < 0)                               
-        return 0;                            
+    int i = n - 2;                           // переходим к индексу предпоследнего элемента
+    while (i >= 0 && s[i] >= s[i + 1])       // Идём влево, пока видим убывающую последовательность (s[i] >= s[i+1]).
+        i--;                                 // Когда нашли s[i] < s[i+1], останавливаемся. Этот i — место, где можно «увеличить» строку.
+    if (i < 0)                               // Если i не нашёлся, значит строка полностью убывающая (например "321").
+        return 0;                            // 0 = Строка убывающая
 
-    int j = n - 1;                          
+    int j = n - 1;                          // Идём справа. Ищем первый символ, который больше s[i].
     while (s[i] >= s[j])
         j--;
-    swap(s, i, j);                          
+    swap(s, i, j);                          // Меняем s[i] и s[j].
 
-    for (int a = i + 1, b = n - 1; a < b; a++, b--)    
+    for (int a = i + 1, b = n - 1; a < b; a++, b--)    // Переворачиваем хвост
         swap(s, a, b);
-    return 1;                                          
+    return 1;                                          // 1 = SUCCESS
 }
 
 void sort(char *s, int n)

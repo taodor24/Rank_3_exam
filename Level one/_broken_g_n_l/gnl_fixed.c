@@ -44,8 +44,8 @@ int str_append_mem(char **s1, char *s2, size_t size2)
     char *tmp = malloc(size1 + size2 + 1);
     if (!tmp)
         return 0;
-    if(*s1) ft_memcpy(tmp, *s1, size1);
-    if(s2) ft_memcpy(tmp + size1, s2, size2);
+    if(*s1) ft_memcpy(tmp, *s1, size1);        // + if(*s1)
+    if(s2) ft_memcpy(tmp + size1, s2, size2);  // + if(s2)
     tmp[size1 + size2] = 0;
     free(*s1);
     *s1 = tmp;
@@ -54,7 +54,7 @@ int str_append_mem(char **s1, char *s2, size_t size2)
 
 int str_append_str(char **s1, char *s2)
 {
-	if(!s2) return 1;
+	if(!s2) return 1;                       // +if(!s2) return 1;
     return str_append_mem(s1, s2, ft_strlen(s2));
 }
 
@@ -70,21 +70,22 @@ char *get_next_line(int fd)
             return NULL;
 
         int read_ret = read(fd, b, BUFFER_SIZE);
-        if(read_ret == 0)    // EOF processing is added
-	{
-		b[0] ='\0';
-		if( !ret || !(*ret))
-		{
-			free(ret);
-			return NULL;to test errors
-		}
-		return ret;
-	}
-	if (read_ret == -1)
+        if (read_ret == 0) // EOF reached --------------------------------------------
+        {
+            b[0] = '\0';
+            if (!ret || !(*ret))
+            {
+                free(ret);
+                return NULL;
+            }
+            return ret;
+        }                               //---------------------------------------------
+        if (read_ret == -1) // read error
         {
             free(ret);
             return NULL;
         }
+
         b[read_ret] = 0;
         tmp = ft_strchr(b, '\n');
     }
@@ -94,41 +95,67 @@ char *get_next_line(int fd)
         free(ret);
         return NULL;
     }
-    size_t i = 0;         // buffer clean after return of a string
-    size_t j = tmp - b +1;
-    while(b[j])
-	   b[i++] = b[j++];
-    b[i] ='\0';
-    
+
+    // shift leftover buffer after newline--------------------------------------------------
+    size_t i = 0;
+    size_t j = tmp - b + 1;
+    while (b[j])
+        b[i++] = b[j++];
+    b[i] = '\0';                            //-----------------------------------------------
+
     return ret;
 }
 
 
-/*
+
+// Minimal MAIN to test our repaired GNL:
+
 #include <stdio.h>
 #include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 int main(int ac, char **av)
 {
-	int fd;
-	fd = open(av[1], O_RDONLY);
-	if(fd < 0)
-		return 1;
-	char *lire;
-	while((lire = get_next_line(fd)))
-	{
-		printf("%s", lire);
-		free(lire);
-	}
-	close(fd);
+    // --- Test 1: NULL checks ---
+    printf("ft_strlen(NULL) = %zu (expected 0)\n", ft_strlen(NULL));
+    printf("ft_strchr(NULL,'a') = %p (expected NULL)\n", ft_strchr(NULL, 'a'));
+    printf("ft_memcpy(NULL,NULL,5) = %p (expected NULL)\n\n", ft_memcpy(NULL, NULL, 5));
+
+    // --- Test 2: empty file ---
+    int fd = open("empty.txt", O_RDONLY);
+    printf("Empty file -> %s\n\n", get_next_line(fd)); // должно быть NULL
+    close(fd);
+
+    // --- Test 3: file without newline ---
+    fd = open("no_newline.txt", O_RDONLY);
+    char *line = get_next_line(fd);
+    printf("No newline -> %s\n\n", line); // должен вернуть всю строку
+    free(line);
+    close(fd);
+
+    // --- Test 4: normal file with multiple lines ---
+    if (ac > 1)
+    {
+        fd = open(av[1], O_RDONLY);
+        int i = 1;
+        while ((line = get_next_line(fd)))
+        {
+            printf("Line %d: %s", i++, line); // проверим построчное чтение
+            free(line);
+        }
+        close(fd);
+    }
+    return 0;
 }
-*/
 
 
 
 
 
 
-/// MAIN  to test errors: 
+/*
+/// Bigger MAIN  to test errors: 
 #include <stdio.h>
 #include <fcntl.h>
 #include <stdlib.h>
@@ -197,3 +224,4 @@ int main(int ac, char **av)
 
     return 0;
 }
+*/
